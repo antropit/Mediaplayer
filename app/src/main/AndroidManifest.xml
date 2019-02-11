@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".player.PlayerService"/>
+        <service android:name=".service.PlayerService"/>
     </application>
 
 </manifest>

@@ -5,10 +5,12 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.lifecycle.ViewModel
 import ru.geekbrains.mediaplayer.repository.MediaSourceRepo
+import ru.geekbrains.mediaplayer.service.MediaServiceManager
 
 class ListViewModel(
     private val typeName: String,
-    private val repo: MediaSourceRepo
+    private val repo: MediaSourceRepo,
+    private val serviceManager: MediaServiceManager
 ): ViewModel(), LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)

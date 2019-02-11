@@ -1,4 +1,4 @@
-package ru.geekbrains.mediaplayer.player
+package ru.geekbrains.mediaplayer.service
 
 import android.app.*
 import android.content.Intent
@@ -11,6 +11,8 @@ import org.koin.android.ext.android.inject
 import ru.geekbrains.mediaplayer.R
 import ru.geekbrains.mediaplayer.feature.MainActivity
 import ru.geekbrains.mediaplayer.model.MediaSourceEntity
+import ru.geekbrains.mediaplayer.player.PlayerProvider
+import ru.geekbrains.mediaplayer.player.PlayerStateListener
 
 const val NOTIFICATION_ID = 10
 const val NOTIFICATION_CHANNEL_ID = "101"
@@ -19,7 +21,7 @@ class PlayerService: Service() {
 
     private val binder = PlayerServiceBinder()
     private val player by inject<PlayerProvider>()
-    private val isPlayingStateSubject = BehaviorSubject.create<MediaSourceEntity> {  }
+    private val isPlayingStateSubject = BehaviorSubject.create<MediaSourceEntity>()
 
     private lateinit var notificationManager: NotificationManager
 
@@ -28,20 +30,30 @@ class PlayerService: Service() {
 
         notificationManager = getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
         createChannel()
+        player.addListener(playerListener)
     }
 
     fun startPlayer(data: MediaSourceEntity) {
-
+        player.onPlay(data)
     }
 
     fun stopPlayer() {
-
+        player.onStop()
     }
 
-    fun getPlayingStateSubject() = isPlayingStateSubject
+    fun getIsPlayingStateSubject() = isPlayingStateSubject
 
     override fun onDestroy() {
         super.onDestroy()
+        player.removeListener(playerListener)
+        player.onDestroy()
+    }
+
+    private val playerListener = object : PlayerStateListener {
+        override fun onChangePlayingState(data: MediaSourceEntity) {
+            isPlayingStateSubject.onNext(data)
+            if (data.isPlaying) showNotification(data.name) else dismissNotification()
+        }
     }
 
     private fun createChannel() {
@@ -84,7 +96,7 @@ class PlayerService: Service() {
     }
 
     private inner class PlayerServiceBinder : Binder(){
-        fun getService(): PlayerService{
+        fun getService(): PlayerService {
             return this@PlayerService
         }
     }
