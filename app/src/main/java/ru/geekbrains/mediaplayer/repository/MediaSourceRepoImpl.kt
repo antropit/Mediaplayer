@@ -42,7 +42,7 @@ class MediaSourceRepoImpl(
         }
     }
 
-    override fun udateFileMedia(): Completable {
+    override fun updateFileMedia(): Completable {
         return fileContentProvider.getFiles()
             .map { dbProvider.setMedia(it) }
             .ignoreElements()

@@ -2,6 +2,7 @@ package ru.geekbrains.mediaplayer.feature.list
 
 
 import android.Manifest
+import android.arch.lifecycle.Observer
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -12,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_list.*
+import org.koin.android.architecture.ext.viewModel
 
 import ru.geekbrains.mediaplayer.R
 
@@ -29,6 +31,9 @@ class ListFragment : Fragment() {
         }
     }
 
+    private val viewModel by viewModel<ListViewModel>()
+    private val adapter = MediaAdapter(listener = {viewModel.onClickItem(it)})
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,15 +47,28 @@ class ListFragment : Fragment() {
 
         initView()
         subscribe()
+
+        if (checkPermission() == PackageManager.PERMISSION_DENIED) requestPermission()
     }
 
     private fun initView() {
         rvMedia.layoutManager = LinearLayoutManager(context)
-        btnStartStop.setOnClickListener {  }
+        rvMedia.adapter = adapter
+        btnStartStop.setOnClickListener { viewModel.onStartStopPlayer() }
     }
 
     private fun subscribe() {
-
+        viewModel.getMedia().observe(this, Observer {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
+        viewModel.isPlayingState.observe(this, Observer {
+            it?.also {
+                if (it) btnStartStop.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_stop))
+                    else btnStartStop.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_play_arrow))
+            }
+        })
     }
 
     private fun checkPermission() = ContextCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -63,7 +81,7 @@ class ListFragment : Fragment() {
         when (requestCode) {
             REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    //TODO Grand permissions
+                    viewModel.getFilesFromdisc()
                 }
             }
         }

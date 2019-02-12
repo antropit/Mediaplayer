@@ -8,5 +8,5 @@ import ru.geekbrains.mediaplayer.model.MediaType
 interface MediaSourceRepo {
     fun getMedia(type: MediaType): Flowable<List<MediaSourceEntity>>
     fun updatePlayingState(id: Int, isPlaying:Boolean): Completable
-    fun udateFileMedia(): Completable
+    fun updateFileMedia(): Completable
 }
