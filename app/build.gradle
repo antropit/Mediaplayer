@@ -52,7 +52,7 @@ dependencies {
 
     implementation 'javax.inject:javax.inject:1'
 
-    implementation 'org.koin:koin-android-architecture:0.9.3'
+    implementation 'org.koin:koin-android-viewmodel:1.0.2'
 
     implementation 'com.google.android.exoplayer:exoplayer-core:2.7.3'
     implementation 'saschpe.android:exoplayer2-ext-icy:1.0.1'

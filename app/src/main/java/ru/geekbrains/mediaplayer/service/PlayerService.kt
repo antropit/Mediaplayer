@@ -9,7 +9,7 @@ import android.support.v4.app.NotificationCompat
 import io.reactivex.subjects.BehaviorSubject
 import org.koin.android.ext.android.inject
 import ru.geekbrains.mediaplayer.R
-import ru.geekbrains.mediaplayer.feature.MainActivity
+import ru.geekbrains.mediaplayer.feature.main.MainActivity
 import ru.geekbrains.mediaplayer.model.MediaSourceEntity
 import ru.geekbrains.mediaplayer.player.PlayerProvider
 import ru.geekbrains.mediaplayer.player.PlayerStateListener

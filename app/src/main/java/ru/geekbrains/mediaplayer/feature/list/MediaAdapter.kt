@@ -39,7 +39,7 @@ class MediaAdapter(private val listener: (MediaSourceEntity) -> Unit):
             view.name.text = item.name
             Glide.with(view.context)
                 .load(item.imagePath)
-                //.placeholder() //TODO add placeholder
+                .placeholder(R.drawable.placeholder)
                 .into(view.logo)
 
             if (item.isPlaying) view.vuMeter.visibility = View.VISIBLE else view.vuMeter.visibility = View.GONE

@@ -44,10 +44,10 @@ class ListViewModel(
         compDesp.clear()
     }
 
-    fun getFilesFromdisc() {
+    fun getFilesFromDisc() {
         compDesp.add(
             repo.updateFileMedia()
-                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
                 .subscribe()
         )
     }

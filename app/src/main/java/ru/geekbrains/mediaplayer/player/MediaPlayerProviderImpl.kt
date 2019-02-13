@@ -6,7 +6,7 @@ import android.net.Uri
 import ru.geekbrains.mediaplayer.model.MediaSourceEntity
 import ru.geekbrains.mediaplayer.model.MediaType
 
-class MediaPlayerProvider(private val context: Context): PlayerProvider() {
+class MediaPlayerProviderImpl(private val context: Context): PlayerProvider() {
 
     private val player = MediaPlayer()
 

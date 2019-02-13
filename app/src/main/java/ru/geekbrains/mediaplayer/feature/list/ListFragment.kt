@@ -13,7 +13,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_list.*
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 import ru.geekbrains.mediaplayer.R
 
@@ -31,7 +32,10 @@ class ListFragment : Fragment() {
         }
     }
 
-    private val viewModel by viewModel<ListViewModel>()
+    private val viewModel by viewModel<ListViewModel>{
+        parametersOf(arguments!!.getString(TYPE_NAME))
+    }
+
     private val adapter = MediaAdapter(listener = {viewModel.onClickItem(it)})
 
     override fun onCreateView(
@@ -47,6 +51,8 @@ class ListFragment : Fragment() {
 
         initView()
         subscribe()
+
+        lifecycle.addObserver(viewModel)
 
         if (checkPermission() == PackageManager.PERMISSION_DENIED) requestPermission()
     }
@@ -81,7 +87,7 @@ class ListFragment : Fragment() {
         when (requestCode) {
             REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    viewModel.getFilesFromdisc()
+                    viewModel.getFilesFromDisc()
                 }
             }
         }
