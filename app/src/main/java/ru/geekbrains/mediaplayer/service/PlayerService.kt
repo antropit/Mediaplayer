@@ -95,7 +95,7 @@ class PlayerService: Service() {
         return binder
     }
 
-    private inner class PlayerServiceBinder : Binder(){
+    inner class PlayerServiceBinder : Binder(){
         fun getService(): PlayerService {
             return this@PlayerService
         }

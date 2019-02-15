@@ -1,4 +1,4 @@
-package ru.geekbrains.mediaplayer.dl
+package ru.geekbrains.mediaplayer.di
 
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient

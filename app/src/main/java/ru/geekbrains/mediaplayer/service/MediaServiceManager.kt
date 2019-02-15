@@ -8,8 +8,8 @@ import android.os.IBinder
 import ru.geekbrains.mediaplayer.model.MediaSourceEntity
 
 class MediaServiceManager(private val context: Context) {
-    private val service: PlayerService? = null
-    private val serviceBound = false
+    private var service: PlayerService? = null
+    private var serviceBound = false
 
     fun bindService() {
         if (!serviceBound) {
@@ -30,11 +30,14 @@ class MediaServiceManager(private val context: Context) {
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            service = null
+            serviceBound = false
         }
 
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+            val b = binder as PlayerService.PlayerServiceBinder
+            service = b.getService()
+            serviceBound = true
         }
     }
 

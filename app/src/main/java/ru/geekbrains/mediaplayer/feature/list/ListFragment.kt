@@ -64,12 +64,12 @@ class ListFragment : Fragment() {
     }
 
     private fun subscribe() {
-        viewModel.getMedia().observe(this, Observer {
+        viewModel.getMedia().observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
         })
-        viewModel.isPlayingState.observe(this, Observer {
+        viewModel.isPlayingState.observe(viewLifecycleOwner, Observer {
             it?.also {
                 if (it) btnStartStop.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_stop))
                     else btnStartStop.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_play_arrow))
